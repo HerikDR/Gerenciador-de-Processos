@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${titulo} ?: 'Gerenciador de Processos'">Gerenciador de Processos</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- CSS Customizado -->
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        .navbar-brand {
+            font-weight: 600;
+            font-size: 1.25rem;
+        }
+
+        .processo-card {
+            transition: all 0.3s ease;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .processo-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .badge-ocioso { background-color: #6c757d !important; }
+        .badge-baixa { background-color: #198754 !important; }
+        .badge-media { background-color: #ffc107 !important; color: #000; }
+        .badge-alta { background-color: #fd7e14 !important; }
+        .badge-urgente { background-color: #dc3545 !important; }
+    </style>
+</head>
+<body class="d-flex flex-column min-vh-100">
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/processos}">
+            <i class="bi bi-list-task"></i>
+            Gerenciador de Processos
+        </a>
+    </div>
+</nav>
+
+<!-- Container Principal -->
+<main class="container mt-4 flex-grow-1">
+    <!-- Alertas -->
+    <div th:if="${sucesso}" class="alert alert-success alert-dismissible fade show">
+        <i class="bi bi-check-circle me-2"></i>
+        <span th:text="${sucesso}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+
+    <div th:if="${erro}" class="alert alert-danger alert-dismissible fade show">
+        <i class="bi bi-exclamation-triangle me-2"></i>
+        <span th:text="${erro}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+
+    <!-- Conteúdo da Página -->
+    <th:block th:fragment="content">
+        <!-- Conteúdo será inserido aqui -->
+    </th:block>
+</main>
+
+<!-- Bootstrap JS (APENAS PARA FUNCIONALIDADES BÁSICAS) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
