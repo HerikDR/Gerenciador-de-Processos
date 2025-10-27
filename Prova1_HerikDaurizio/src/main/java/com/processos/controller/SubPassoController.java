@@ -4,12 +4,12 @@ import com.processos.model.SubPasso;
 import com.processos.model.Processo;
 import com.processos.service.SubPassoService;
 import com.processos.service.ProcessoService;
+import jakarta.servlet.http.HttpSession; // ← ADICIONAR ESTE IMPORT
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.util.List;
 
 @Controller
@@ -26,13 +26,17 @@ public class SubPassoController {
     @GetMapping("/processo/{processoId}")
     public String listarPorProcesso(@PathVariable Long processoId,
                                     @RequestParam(required = false) String tema,
+                                    HttpSession session, // ← ADICIONAR PARÂMETRO
                                     Model model) throws Exception {
         Processo processo = processoService.buscarPorId(processoId);
         List<SubPasso> subPassos = subPassoService.listarPorProcesso(processoId);
+
         model.addAttribute("processo", processo);
         model.addAttribute("subPassos", subPassos);
         model.addAttribute("tema", tema);
-        return "subpassos/lista"; // Assuma que há uma view subpassos/lista.html
+        model.addAttribute("nomeUsuario", session.getAttribute("nomeUsuario")); // ← ADICIONAR LINHA
+
+        return "subpassos/lista";
     }
 
     // Formulário para novo subpasso
@@ -43,9 +47,10 @@ public class SubPassoController {
         Processo processo = processoService.buscarPorId(processoId);
         SubPasso subPasso = new SubPasso();
         subPasso.setProcesso(processo);
+
         model.addAttribute("subPasso", subPasso);
         model.addAttribute("tema", tema);
-        return "subpassos/formulario"; // Assuma que há uma view subpassos/formulario.html
+        return "subpassos/formulario";
     }
 
     // Salvar novo subpasso
@@ -76,12 +81,14 @@ public class SubPassoController {
                             @RequestParam(required = false) String tema,
                             RedirectAttributes redirectAttributes) throws Exception {
         SubPasso subPasso = subPassoService.buscarPorId(id);
+
         // Atualizar campos
         subPasso.setDescricao(subPassoAtualizado.getDescricao());
         subPasso.setOrdem(subPassoAtualizado.getOrdem());
         subPasso.setObrigatorio(subPassoAtualizado.isObrigatorio());
         subPasso.setConcluido(subPassoAtualizado.isConcluido());
-        subPassoService.criarSubPasso(subPasso); // Reutilize criarSubPasso, pois ele chama save
+
+        subPassoService.criarSubPasso(subPasso);
         redirectAttributes.addFlashAttribute("sucesso", "Subpasso atualizado com sucesso!");
         return "redirect:/subpassos/processo/" + subPasso.getProcesso().getId() + "?tema=" + (tema != null ? tema : "");
     }
@@ -93,6 +100,7 @@ public class SubPassoController {
                           RedirectAttributes redirectAttributes) throws Exception {
         SubPasso subPasso = subPassoService.buscarPorId(id);
         Long processoId = subPasso.getProcesso().getId();
+
         subPassoService.deletar(id);
         redirectAttributes.addFlashAttribute("sucesso", "Subpasso deletado com sucesso!");
         return "redirect:/subpassos/processo/" + processoId + "?tema=" + (tema != null ? tema : "");

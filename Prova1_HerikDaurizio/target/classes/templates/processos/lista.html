@@ -182,6 +182,64 @@
     </style>
 </head>
 <body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm mb-4">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/processos}">
+            <i class="bi bi-kanban me-2"></i>Gerenciador de Processos
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-center">
+                <!-- Link Processos -->
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/processos}">
+                        <i class="bi bi-list-task me-1"></i>Processos
+                    </a>
+                </li>
+
+                <!-- Divider -->
+                <li class="nav-item">
+                    <span class="nav-link text-white-50">|</span>
+                </li>
+
+                <!-- Informações do Usuário -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown"
+                       role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-person-circle me-2 fs-5"></i>
+                        <span th:text="${session.nomeUsuario != null ? session.nomeUsuario : 'Usuário'}">Usuário</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userDropdown">
+                        <li>
+                            <h6 class="dropdown-header">
+                                <i class="bi bi-envelope me-2"></i>
+                                <span th:text="${session.emailUsuario}">email@exemplo.com</span>
+                            </h6>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item text-danger" th:href="@{/auth/logout}">
+                                <i class="bi bi-box-arrow-right me-2"></i>Sair
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- FIM DA NAVBAR -->
+
+<!-- O resto do seu HTML continua normal aqui -->
+<div class="container-fluid p-4">
+    <h2>Lista de Processos</h2>
+    <!-- ... resto do código ... -->
+
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
     <div class="container">
